@@ -28,11 +28,11 @@ const AmountInput = (props: Props) => (
         >
           <Grid fluid="true" columns={2}>
                 <Grid.Row>
-                <Grid.Column>
-            <h4>USD</h4>
+                <Grid.Column style={{textAlign: 'left'}}>
+                  <h4>USD</h4>
                 </Grid.Column>
-                <Grid.Column>
-              <h4>{props.amount}</h4>
+                <Grid.Column style={{textAlign: 'right'}}>
+                  <h4>{props.amount}</h4>
                 </Grid.Column>
                 </Grid.Row>
               </Grid>

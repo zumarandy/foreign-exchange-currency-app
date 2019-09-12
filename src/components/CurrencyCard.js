@@ -23,18 +23,18 @@ const CurrencyCard = (props: Props) => (
         <Grid columns={2}>
           <Grid.Row>
             <Grid.Column>
-              <div>{props.currency}</div>
+              <h3>{props.currency}</h3>
             </Grid.Column>
             <Grid.Column>
-              <div>{props.value}</div>
+              <h3 style={{textAlign:'right'}}>{props.value}</h3>
             </Grid.Column>
           </Grid.Row>
         </Grid>
       </Card.Header>
-      <Card.Meta>
+      <Card.Meta style={{fontStyle:'italic',fontWeight: 'bold'}}>
         {props.currency} - {props.currencyName}
       </Card.Meta>
-      <Card.Description>
+      <Card.Description style={{fontStyle:'italic'}}>
         <h4>1 USD = {props.currency} {props.rate} </h4>
       </Card.Description>
     </Card.Content>

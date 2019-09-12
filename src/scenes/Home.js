@@ -6,7 +6,7 @@ import AmountInput from '../components/AmountInput';
 import CurrencyCard from '../components/CurrencyCard';
 import AddCurrencyInput from '../components/AddCurrencyInput';
 
-import { formatNumber } from '../utils/formatNumbers';
+import { formatNumber, formatCurrency } from '../utils/formatNumbers';
 import currenciesName from '../utils/currenciesName.json';
 
 class Home extends React.Component {
@@ -111,8 +111,8 @@ class Home extends React.Component {
     return ( 
       <Container fluid>
         <Responsive as={Container} style={{padding: '5% 15%'}}>
-          <h1 style={{fontStyle: 'italic'}}>
-            Foreign Exchange Currency
+          <h1 style={{fontStyle: 'italic', color: 'green'}}>
+            Foreign Exchange Currency Converter
           </h1>
           <Segment.Group>
             <Segment>
@@ -129,21 +129,18 @@ class Home extends React.Component {
               {this.state.isChangeAmountInput && <p style={{fontStyle: 'italic'}}> Enter to change amount </p>}
             </Segment>
             <Segment>
-              <h3>placeholder currency result card</h3>
-              <Card.Group> 
+              <Card.Group style={{ marginTop:'0px'}}> 
                 {this.state.currenciesDisplay.map((item, index) => (
                   <CurrencyCard 
                     key={item.currency}
                     currency={item.currency}
-                    value={item.value}
-                    rate={item.rate}
+                    value={formatCurrency(item.value)}
+                    rate={formatCurrency(item.rate)}
                     currencyName={item.currencyName}
                     onRemoveCurrency={() => this.removeCurrency(item.currency)}
                   />
                 ))}
               </Card.Group>
-              
-              <h3>placeholder add more currency button here</h3>
               <AddCurrencyInput
                 currencies={this.state.currencies}
                 isAddCurrencyPressed={this.state.isAddCurrencyPressed}

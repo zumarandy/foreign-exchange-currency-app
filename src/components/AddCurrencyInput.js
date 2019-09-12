@@ -11,10 +11,11 @@ type Props = {
 }
 
 const AddCurrencyInput = (props: Props) => (
-  <Container fluid> 
+  <Container fluid style={{ marginTop:'15px'}}> 
     { props.isAddCurrencyPressed ? (
       <Button
         fluid
+        as="div"
         labelPosition="left"
       >
       <Dropdown
