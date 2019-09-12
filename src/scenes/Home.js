@@ -3,6 +3,8 @@ import axios from "axios";
 import { Container, Responsive, Segment, Card } from 'semantic-ui-react';
 
 import AmountInput from '../components/AmountInput';
+import CurrencyCard from '../components/CurrencyCard';
+import AddCurrencyInput from '../components/AddCurrencyInput';
 
 import { formatNumber } from '../utils/formatNumbers';
 
@@ -12,6 +14,7 @@ class Home extends React.Component {
     this.state = {
       result: null,
       isChangeAmountInput: false,
+      isAddCurrencyPressed: false,
       fromCurrency: "USD",
       toCurrency: "AUD",
       amount: 10,
@@ -84,7 +87,28 @@ class Home extends React.Component {
             </Segment>
             <Segment>
               <h3>placeholder currency result card</h3>
+              <Card.Group> 
+                {this.state.currenciesDisplay.map((item, index) => (
+                  <CurrencyCard 
+                    key={item.currency}
+                    currency={item.currency}
+                    value={item.value}
+                    rate={item.rate}
+                    currencyName={item.currencyName}
+                    onRemoveCurrency={() => this.removeCurrency()}
+                  />
+                ))}
+              </Card.Group>
+              
               <h3>placeholder add more currency button here</h3>
+              <AddCurrencyInput
+                currencies={this.state.currencies}
+                isAddCurrencyPressed={this.state.isAddCurrencyPressed}
+                onAddCurrencyPressed={() => this.setState({ isAddCurrencyPressed: true })}
+                handleAddCurrency={(event, { value }) => this.setState({ toCurrency: value })}
+                toCurrencyValue={this.state.toCurrency}
+                onAddCurrency={() => this.addCurrency()}
+              />
             </Segment>
           </Segment.Group>
         </Responsive>
