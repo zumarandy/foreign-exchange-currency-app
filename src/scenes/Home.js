@@ -13,7 +13,6 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: null,
       isChangeAmountInput: false,
       isAddCurrencyPressed: false,
       fromCurrency: "USD",
@@ -66,14 +65,13 @@ class Home extends React.Component {
           const result = amount * response.data.rates[toCurrency];
           const currencyItem = {
             currency: toCurrency,
-            value: result,
+            value: result.toFixed(5),
             rate: response.data.rates[toCurrency],
             currencyName: currenciesName.currencyName[toCurrency]
           };
         
           this.setState({
             currenciesDisplay: [...this.state.currenciesDisplay, currencyItem],
-            result: result.toFixed(5),
             isAddCurrencyPressed : false,
           });
         })
@@ -83,12 +81,23 @@ class Home extends React.Component {
     }
   }
 
-  removeCurrency() {
-    
+  removeCurrency(currency) {
+    this.setState({
+      currenciesDisplay: this.state.currenciesDisplay.filter(item => item.currency !== currency),
+    });
   }
 
   updateAllCurrencies() {
+    const { currenciesDisplay, amount } = this.state;
+    let currenciesDisplayUpdate = [];
     
+    for(let i =0; i< currenciesDisplay.length; i++) {
+      let currenciesDisplayTemp = currenciesDisplay[i];
+      currenciesDisplayTemp.value = currenciesDisplayTemp.rate * amount;
+      currenciesDisplayUpdate.push(currenciesDisplayTemp);
+    }
+
+    this.setState({ currenciesDisplay: currenciesDisplayUpdate });
   }
 
   keyPressAmountInput(event) {
@@ -129,7 +138,7 @@ class Home extends React.Component {
                     value={item.value}
                     rate={item.rate}
                     currencyName={item.currencyName}
-                    onRemoveCurrency={() => this.removeCurrency()}
+                    onRemoveCurrency={() => this.removeCurrency(item.currency)}
                   />
                 ))}
               </Card.Group>

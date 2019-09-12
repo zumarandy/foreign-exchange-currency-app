@@ -14,8 +14,8 @@ const AddCurrencyInput = (props: Props) => (
   <Container fluid> 
     { props.isAddCurrencyPressed ? (
       <Button
-        as="div"
         fluid
+        labelPosition="left"
       >
       <Dropdown
         placeholder="Add More Currencies"
