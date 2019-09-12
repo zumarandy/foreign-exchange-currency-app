@@ -7,6 +7,7 @@ import CurrencyCard from '../components/CurrencyCard';
 import AddCurrencyInput from '../components/AddCurrencyInput';
 
 import { formatNumber } from '../utils/formatNumbers';
+import currenciesName from '../utils/currenciesName.json';
 
 class Home extends React.Component {
   constructor(props) {
@@ -34,10 +35,12 @@ class Home extends React.Component {
           currencyArrTemp.push(key);
         }
 
+        currencyArrTemp.sort();
+
         for (let key = 0; key < currencyArrTemp.length; key++) {
             currencyArr.push({'key': currencyArrTemp[key], 'value': currencyArrTemp[key], 'text': currencyArrTemp[key]});
         }
-    
+
         this.setState({ currencies: currencyArr });
       })
       .catch(err => {
@@ -46,7 +49,38 @@ class Home extends React.Component {
   }
 
   addCurrency() {
+    let isConverted = false;
+    const { currenciesDisplay, toCurrency, amount } = this.state;
     
+    for (let i = 0; i < currenciesDisplay.length; i++) {
+      if(currenciesDisplay[i].currency === toCurrency) {
+        isConverted = true;
+        return;
+      } 
+    }
+        
+    if (!isConverted) {
+      axios
+        .get(`https://api.exchangeratesapi.io/latest?base=${this.state.fromCurrency}&symbols=${this.state.toCurrency}`)
+        .then(response => {
+          const result = amount * response.data.rates[toCurrency];
+          const currencyItem = {
+            currency: toCurrency,
+            value: result,
+            rate: response.data.rates[toCurrency],
+            currencyName: currenciesName.currencyName[toCurrency]
+          };
+        
+          this.setState({
+            currenciesDisplay: [...this.state.currenciesDisplay, currencyItem],
+            result: result.toFixed(5),
+            isAddCurrencyPressed : false,
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 
   removeCurrency() {
