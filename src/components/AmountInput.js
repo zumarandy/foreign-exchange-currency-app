@@ -27,15 +27,15 @@ const AmountInput = (props: Props) => (
           onClick={props.onChangeAmountInput}
         >
           <Grid fluid="true" columns={2}>
-                <Grid.Row>
-                <Grid.Column style={{textAlign: 'left'}}>
-                  <h4>USD</h4>
-                </Grid.Column>
-                <Grid.Column style={{textAlign: 'right'}}>
-                  <h4>{props.amount}</h4>
-                </Grid.Column>
-                </Grid.Row>
-              </Grid>
+            <Grid.Row>
+              <Grid.Column style={{textAlign: 'left'}}>
+                <h4>USD</h4>
+              </Grid.Column>
+              <Grid.Column style={{textAlign: 'right'}}>
+                <h4>{props.amount}</h4>
+              </Grid.Column>
+              </Grid.Row>
+          </Grid>
         </Button>
       )
     }
