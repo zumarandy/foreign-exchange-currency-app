@@ -1,11 +1,11 @@
 import React from "react";
-import axios from "axios";
 import { Container, Responsive, Segment, Card } from 'semantic-ui-react';
 
 import AmountInput from '../components/AmountInput';
 import CurrencyCard from '../components/CurrencyCard';
 import AddCurrencyInput from '../components/AddCurrencyInput';
 
+import { getCurrencyData, getCurrencyConversion } from '../services/api/getRatesBaseUSD';
 import { formatNumber, formatCurrency } from '../utils/formatNumbers';
 import currenciesName from '../utils/currenciesName.json';
 
@@ -24,8 +24,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    axios
-      .get('https://api.exchangeratesapi.io/latest?base=USD')
+    getCurrencyData()
       .then(response => {
         const currencyArrTemp = [];
         const currencyArr = [];
@@ -41,9 +40,7 @@ class Home extends React.Component {
         }
 
         this.setState({ currencies: currencyArr });
-      })
-      .catch(err => {
-        console.log(err);
+
       });
   }
 
@@ -59,25 +56,21 @@ class Home extends React.Component {
     }
         
     if (!isConverted) {
-      axios
-        .get(`https://api.exchangeratesapi.io/latest?base=${this.state.fromCurrency}&symbols=${this.state.toCurrency}`)
-        .then(response => {
-          const result = amount * response.data.rates[toCurrency];
-          const currencyItem = {
-            currency: toCurrency,
-            value: result.toFixed(5),
-            rate: response.data.rates[toCurrency],
-            currencyName: currenciesName.currencyName[toCurrency]
-          };
-        
-          this.setState({
-            currenciesDisplay: [...this.state.currenciesDisplay, currencyItem],
-            isAddCurrencyPressed : false,
-          });
-        })
-        .catch(err => {
-          console.log(err);
+      getCurrencyConversion(toCurrency)
+      .then(response => { 
+        const result = amount * response.data.rates[toCurrency];
+        const currencyItem = {
+          currency: toCurrency,
+          value: result.toFixed(5),
+          rate: response.data.rates[toCurrency],
+          currencyName: currenciesName.currencyName[toCurrency]
+        };
+      
+        this.setState({
+          currenciesDisplay: [...this.state.currenciesDisplay, currencyItem],
+          isAddCurrencyPressed : false,
         });
+      });
     }
   }
 
